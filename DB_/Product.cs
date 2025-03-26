@@ -30,7 +30,7 @@ namespace Практика_по_архиву.DB_
         public string Image { get; set; }
         public Nullable<int> ProductionPersonCount { get; set; }
         public Nullable<int> ProductionWorkshopNumber { get; set; }
-        public decimal MinCostForAgent { get; set; }
+        public Nullable<decimal> MinCostForAgent { get; set; }
     
         public virtual ProductType ProductType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

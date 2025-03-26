@@ -12,12 +12,14 @@
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Поиск, сортировка и фильтрация -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+        <Button Grid.Row="0" Content="Добавить продукцию" Width="177" HorizontalAlignment="Left" Margin="0,0,0,10" Click="AddProductButton_Click"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
             <TextBox x:Name="SearchTextBox" Width="200" Margin="0,0,10,0" 
                      TextChanged="SearchTextBox_TextChanged" 
                      GotFocus="SearchTextBox_GotFocus" 
@@ -36,11 +38,11 @@
                       SelectionChanged="FilterComboBox_SelectionChanged"/>
         </StackPanel>
 
-        <!-- Список продуктов -->
-        <ListBox x:Name="ProductListBox" Grid.Row="1" 
+        <ListBox x:Name="ProductListBox" Grid.Row="2" 
                  ItemsSource="{Binding Products}" 
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 HorizontalContentAlignment="Stretch">
+                 HorizontalContentAlignment="Stretch"
+                 MouseDoubleClick="ProductListBox_MouseDoubleClick">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Gray" BorderThickness="1" Margin="5" 
@@ -51,20 +53,20 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <!-- Изображение -->
+
                             <Image Grid.Column="0" Width="50" Height="50" Margin="0,0,10,0">
                                 <Image.Source>
                                     <Binding Path="ImagePath" />
                                 </Image.Source>
                             </Image>
-                            <!-- Детали продукта -->
+
                             <StackPanel Grid.Column="1">
                                 <TextBlock Text="{Binding ProductTypeTitle}" FontWeight="Bold"/>
                                 <TextBlock Text="{Binding Title}" FontSize="14"/>
                                 <TextBlock Text="{Binding ArticleNumber}"/>
                                 <TextBlock Text="{Binding MaterialList}"/>
                             </StackPanel>
-                            <!-- Стоимость -->
+
                             <TextBlock Grid.Column="2" 
                                        Text="{Binding CalculatedCost, StringFormat=СТОИМОСТЬ: {0} руб.}" 
                                        VerticalAlignment="Center"/>
@@ -74,8 +76,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <!-- Пагинация -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" 
+        <StackPanel Grid.Row="3" Orientation="Horizontal" 
                     HorizontalAlignment="Center" Margin="0,10,0,0">
             <Button x:Name="PrevPageButton" Width="30" 
                     Click="PrevPageButton_Click">

@@ -21,7 +21,7 @@ namespace Практика_по_архиву
         public string MaterialList { get; set; }
         public decimal CalculatedCost { get; set; }
         public string BackgroundColor { get; set; }
-        public int? ProductionWorkshopNumber { get; set; } // Добавляем для оптимизации сортировки
+        public int? ProductionWorkshopNumber { get; set; } 
     }
 
    
@@ -35,6 +35,7 @@ namespace Практика_по_архиву
         private int currentPage = 1;
         private int totalPages;
         private const string SearchPlaceholder = "ВВЕДИТЕ ДЛЯ ПОИСКА";
+        private ProductEditWindow _editWindow;
 
         public MainWindow()
         {
@@ -260,6 +261,45 @@ namespace Практика_по_архиву
             {
                 currentPage = page;
                 ApplyFiltersAndSort();
+            }
+        }
+
+        private void AddProductButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_editWindow != null)
+            {
+                MessageBox.Show("Уже открыто окно редактирования. Закройте его перед открытием нового.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            _editWindow = new ProductEditWindow(dbContext);
+            _editWindow.Closed += (s, args) => _editWindow = null;
+            if (_editWindow.ShowDialog() == true)
+            {
+                LoadData();
+            }
+        }
+
+        private void ProductListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (ProductListBox.SelectedItem is ProductViewModel selectedProduct)
+            {
+                if (_editWindow != null)
+                {
+                    MessageBox.Show("Уже открыто окно редактирования. Закройте его перед открытием нового.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                var product = dbContext.Product.Find(selectedProduct.Id);
+                if (product != null)
+                {
+                    _editWindow = new ProductEditWindow(dbContext, product);
+                    _editWindow.Closed += (s, args) => _editWindow = null;
+                    if (_editWindow.ShowDialog() == true)
+                    {
+                        LoadData();
+                    }
+                }
             }
         }
     }
